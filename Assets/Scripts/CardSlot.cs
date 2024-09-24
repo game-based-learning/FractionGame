@@ -9,22 +9,21 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (CardManager.instance.carriedCard == null) 
+            if (CardManager.instance.CarriedCard == null) 
                 return;
 
-            SetCard(CardManager.instance.carriedCard);
+            SetCard(CardManager.instance.CarriedCard);
         }
     }
 
     public void SetCard(Card card)
     {
-        CardManager.instance.carriedCard = null;
+        //CardManager.instance.CarriedCard = null;
+        CardManager.instance.SetCarriedCard(null);
 
-        card.ActiveSlot.HeldCard = null;
         HeldCard = card;
 
         HeldCard.ActiveSlot = this;
         HeldCard.transform.SetParent(transform);
-        HeldCard.CanvasGroup.blocksRaycasts = true;
     }
 }

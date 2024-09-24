@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 public class CardManager : MonoBehaviour
 {
     public static CardManager instance;
-    public Card carriedCard;
+
+    public Card CarriedCard { get; private set; }
 
     [SerializeField] private PlayerInput inputs;
     private InputAction mousePosition;
@@ -12,29 +13,41 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform draggables;
     [SerializeField] private Card cardPrefab;
 
+    #region Unity Callbacks
+
     private void Awake()
     {
         instance = this;
 
         mousePosition = inputs.actions.FindAction("Point");
-        //inputs.currentActionMap.Enable();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (carriedCard == null) 
+        mousePosition.performed += UpdateCarriedCardPosition;
+    }
+
+    private void OnDisable()
+    {
+        mousePosition.performed -= UpdateCarriedCardPosition;
+    }
+
+    #endregion
+
+    private void UpdateCarriedCardPosition(InputAction.CallbackContext context)
+    {
+        if (CarriedCard == null)
             return;
 
-        carriedCard.transform.position = mousePosition.ReadValue<Vector2>();
+        CarriedCard.transform.position = context.ReadValue<Vector2>();
     }
 
     public void SetCarriedCard(Card card)
     {
-        if (carriedCard != null)
-            card.ActiveSlot.SetCard(carriedCard);
+        if (CarriedCard != null)
+            card.ActiveSlot.SetCard(CarriedCard);
 
-        carriedCard = card;
-        carriedCard.CanvasGroup.blocksRaycasts = false;
+        CarriedCard = card;
         card.transform.SetParent(draggables);
     }
 }
