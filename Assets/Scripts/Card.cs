@@ -7,28 +7,31 @@ public class Card : MonoBehaviour, IPointerClickHandler
     private Image cardIcon;
     public CanvasGroup CanvasGroup { get; private set; }
 
-    public CardData CardData { get; set; }
+    [SerializeField] private CardData cardData;
+    public CardData CardData => cardData;
     public CardSlot ActiveSlot { get; set; }
 
     private void Awake()
     {
         CanvasGroup = GetComponent<CanvasGroup>();
         cardIcon = GetComponent<Image>();
+
+        //cardIcon.sprite = cardData.sprite;
     }
 
-    public void Initialize(CardData cardData, CardSlot parent)
+    public void Initialize(CardSlot parent)
     {
-        CardData = cardData;
-        cardIcon.sprite = cardData.sprite;
         ActiveSlot = parent;
         ActiveSlot.HeldCard = this;        
     }
 
+    // This function is only called when the card is put down
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            // SetCarriedItem, which I think is the pickup method
+            CanvasGroup.blocksRaycasts = false;
+            CardManager.instance.SetCarriedCard(this);
         }
     }
 }

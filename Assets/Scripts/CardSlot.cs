@@ -9,14 +9,16 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            //if (carriedCard == null) return;
-            //SetCard(carriedCard);
+            if (CardManager.instance.carriedCard == null) 
+                return;
+
+            SetCard(CardManager.instance.carriedCard);
         }
     }
 
     public void SetCard(Card card)
     {
-        //carriedCard = null;
+        CardManager.instance.carriedCard = null;
 
         card.ActiveSlot.HeldCard = null;
         HeldCard = card;

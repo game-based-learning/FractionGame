@@ -4,12 +4,10 @@ using UnityEngine.InputSystem;
 public class CardManager : MonoBehaviour
 {
     public static CardManager instance;
-    public static Card carriedCard;
+    public Card carriedCard;
 
     [SerializeField] private PlayerInput inputs;
     private InputAction mousePosition;
-
-    [SerializeField] private CardSlot[] cardSlots;
 
     [SerializeField] private Transform draggables;
     [SerializeField] private Card cardPrefab;
@@ -19,6 +17,7 @@ public class CardManager : MonoBehaviour
         instance = this;
 
         mousePosition = inputs.actions.FindAction("Point");
+        //inputs.currentActionMap.Enable();
     }
 
     private void Update()
