@@ -46,7 +46,7 @@ public class EquationManager: MonoBehaviour
     }
 
     // Return the instance of the equation manager. If the instance does not exist, a new one will be created.
-    public void getInstance() {
+    public EquationManager getInstance() {
         if (instance == null) {
             instance = new EquationManager();
         }
