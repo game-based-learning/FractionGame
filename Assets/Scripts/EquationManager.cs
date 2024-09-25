@@ -37,7 +37,7 @@ public class EquationManager: MonoBehaviour
 
         // TODO: Ask numberline to draw the sun of the fractions
 
-        if (totalValue = answer.value) {
+        if (totalValue == answer.value) {
             // Answer is correct
             // TODO: Do something
         }
