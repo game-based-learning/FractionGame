@@ -35,12 +35,14 @@ public class EquationManager: MonoBehaviour
         fraction2 = new Fraction(n2, dn2);
         double totalValue = fraction1.value + fraction2.value;
 
-        // Ask numberline to draw the sun of the fractions
+        // TODO: Ask numberline to draw the sun of the fractions
 
         if (totalValue = answer.value) {
             // Answer is correct
-            // Do something
+            // TODO: Do something
         }
+
+        // TODO: Consider what to do when the answer is wrong
     }
 
     // Return the instance of the equation manager. If the instance does not exist, a new one will be created.
