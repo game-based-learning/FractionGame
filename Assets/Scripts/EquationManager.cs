@@ -29,6 +29,22 @@ public class EquationManager: MonoBehaviour
     private Fraction fraction2;
     private Fraction answer = new Fraction(1, 2);
 
+    private void Awake() {
+        instance = this;
+    }
+
+    private void OnEnable() {
+
+    }
+
+    private void OnDisable() {
+
+    }
+
+    private void Start() {
+        CheckEquation(1, 4, 1, 4);
+    }
+
     // Under the assumption that the equation manager will be notified whenever a submission is made, this function checks the given fractions to the answer
     public void CheckEquation(int n1, int dn1, int n2, int dn2) {
         fraction1 = new Fraction(n1, dn1);
@@ -37,19 +53,16 @@ public class EquationManager: MonoBehaviour
 
         // TODO: Ask numberline to draw the sun of the fractions
 
+        Debug.Log(fraction1.value + " + " + fraction2.value + " = " + answer.value);
         if (totalValue == answer.value) {
+            Debug.Log("Correct!");
             // Answer is correct
             // TODO: Do something
+        } else {
+            Debug.Log("Wrong");
         }
+        
 
         // TODO: Consider what to do when the answer is wrong
-    }
-
-    // Return the instance of the equation manager. If the instance does not exist, a new one will be created.
-    public EquationManager getInstance() {
-        if (instance == null) {
-            instance = new EquationManager();
-        }
-        return instance;
     }
 }
