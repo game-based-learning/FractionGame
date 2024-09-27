@@ -9,9 +9,11 @@ public class NumberLine : MonoBehaviour
     //Prefab could be a properly set up particle or just a square with a texture
     [SerializeField] private GameObject numberLineFillParent;
     
-    [Tooltip("Position of the center of the fill unit in the bottom left corner (if positive) or top left corner (if negative)")]
+    [Tooltip("Position of the center of the fill unit in the bottom left corner")]
     [SerializeField] private Vector2 firstFillUnitPosition;
-    
+    [Tooltip("Y Value of the Position of the center of the fill unit in the top left corner")]
+    [SerializeField] private float firstNegativeFillUnitYValue;
+
     [SerializeField] private float fillWidth;
     [SerializeField] private float maxFillHeight;
 
@@ -38,7 +40,7 @@ public class NumberLine : MonoBehaviour
         get { return lineRangeMin; }
         set { 
                 lineRangeMin = value;
-                DrawTickMarks();
+                //DrawTickMarks();
             }
     }
 
@@ -48,14 +50,21 @@ public class NumberLine : MonoBehaviour
         set
         {
             lineRangeMax = value;
-            DrawTickMarks();
+            //DrawTickMarks();
         }
     }
 
-    /// <summary>
-    /// Position of the center of the fill unit in the bottom left corner (if positive) or top left corner (if negative)
-    /// </summary>
-    public Vector2 FirstFillUnitPosition { get; set; }
+    public int NumberOfLargeTicks
+    {
+        get { return numLargeTicks; }
+        set { numLargeTicks = value; }
+    }
+
+    public int NumSmallTicksBetweenLargeTicks
+    {
+        get { return numSmallTicksBetweenLargeTicks; }
+        set { numSmallTicksBetweenLargeTicks = value; }
+    }
 
     /// <summary>
     /// ( y position, ( x position, numberLineFillUnit instantiated object) )
@@ -84,32 +93,41 @@ public class NumberLine : MonoBehaviour
         this.numFillUnitsWidth = (int) (this.fillWidth / this.fillUnitWidth);
     }
 
-    private void Start()
+    /// <summary>
+    /// Draws the Number Line
+    /// </summary>
+    /// <param name="currentValue">value to display</param>
+    /// <param name="negative">true if should use the negative form of the display</param>
+    public void DisplayInfo(float currentValue, bool negative = false)
     {
-
-        //GameObject newFillUnitObject = Instantiate(this.numberLineFillUnitPrefab,
-        //new Vector2(this.firstFillUnitPosition.x, this.firstFillUnitPosition.y), Quaternion.identity);
-        DrawTickMarks();
-        DrawNumberLineFill(0.75f, this.firstFillUnitPosition.y);
-
-    }
-
-    float time = 0.0f;
-    // Update is called once per frame
-    void Update()
-    {
-        time += Time.deltaTime;
-        if (time > 5)
+        if (!GeneralUtility.IsInRange(currentValue, this.LineRangeMin, this.LineRangeMax))
         {
-            DestroyAllNumberLineFill();
+            Debug.Log("The current value ( " + currentValue + " ) is not within the Number Line Range from " + this.LineRangeMin + " to " + this.LineRangeMax);
+            return;
         }
+
+        float percentToFill = GeneralUtility.PercentOfRange(currentValue, this.LineRangeMin, this.LineRangeMax);
+        float startingYPos;
+        if (negative)
+        {
+            startingYPos = this.firstNegativeFillUnitYValue;
+        }
+        else
+        {
+            startingYPos = this.firstFillUnitPosition.y;
+        }
+
+        DrawTickMarks();
+        DestroyAllNumberLineFill();
+
+        DrawNumberLineFill(percentToFill, startingYPos, negative);
     }
 
     private void DrawNumberLineFill(float percentToFill, float startingYPos, bool negative = false)
     {
         this.numFillUnitsHeight = (int) ( percentToFill * this.maxFillHeight / this.fillUnitHeight );
 
-        Debug.Log("numFillUnitsWidth: " + this.numFillUnitsWidth + ", numFillUnitsHeight: " + this.numFillUnitsHeight);
+        //Debug.Log("numFillUnitsWidth: " + this.numFillUnitsWidth + ", numFillUnitsHeight: " + this.numFillUnitsHeight);
 
         float yPos = startingYPos;
         for (int i = 0; i < this.numFillUnitsHeight; i++)
@@ -140,7 +158,7 @@ public class NumberLine : MonoBehaviour
 
             layerFillUnitObjects[xPos] = newFillUnitObject;
 
-            Debug.Log("Drew at Pos: (" + xPos + ", " + yPos + ")");
+            //Debug.Log("Drew at Pos: (" + xPos + ", " + yPos + ")");
 
             xPos += this.xDisplacementForNewFill;
         }
@@ -222,7 +240,13 @@ public class NumberLine : MonoBehaviour
         {
             Debug.LogError("largeTickPrefab should have a TMP_Text child");
         }
-        numberText.text = largeTickValue.ToString();
+        numberText.text = LargeTickValueRepresentation(largeTickValue);
+    }
+
+    private string LargeTickValueRepresentation(float largeTickValue)
+    {
+        return largeTickValue.ToString();
+        //Replace this later with system to determine what representation of the number to use
     }
 
     private void DrawIntermediateTickMarks(float largeTickValue, float largeTickYPosition, float distanceBetweenSmallTickMarks)
