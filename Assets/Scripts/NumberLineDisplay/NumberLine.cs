@@ -9,7 +9,7 @@ public class NumberLine : MonoBehaviour
     //Prefab could be a properly set up particle or just a square with a texture
     [SerializeField] private GameObject numberLineFillParent;
     
-    [Tooltip("Position of the center of fill unit in the bottom left corner")]
+    [Tooltip("Position of the center of the fill unit in the bottom left corner (if positive) or top left corner (if negative)")]
     [SerializeField] private Vector2 firstFillUnitPosition;
     
     [SerializeField] private float fillWidth;
@@ -53,6 +53,11 @@ public class NumberLine : MonoBehaviour
     }
 
     /// <summary>
+    /// Position of the center of the fill unit in the bottom left corner (if positive) or top left corner (if negative)
+    /// </summary>
+    public Vector2 FirstFillUnitPosition { get; set; }
+
+    /// <summary>
     /// ( y position, ( x position, numberLineFillUnit instantiated object) )
     /// </summary>
     private Dictionary<float, Dictionary<float, GameObject>> fillUnitsCurrentlyDisplayed = new Dictionary<float, Dictionary<float, GameObject>>();
@@ -85,14 +90,19 @@ public class NumberLine : MonoBehaviour
         //GameObject newFillUnitObject = Instantiate(this.numberLineFillUnitPrefab,
         //new Vector2(this.firstFillUnitPosition.x, this.firstFillUnitPosition.y), Quaternion.identity);
         DrawTickMarks();
-        DrawNumberLineFill(1.0f, this.firstFillUnitPosition.y);
+        DrawNumberLineFill(0.75f, this.firstFillUnitPosition.y);
 
     }
 
+    float time = 0.0f;
     // Update is called once per frame
     void Update()
     {
-        
+        time += Time.deltaTime;
+        if (time > 5)
+        {
+            DestroyAllNumberLineFill();
+        }
     }
 
     private void DrawNumberLineFill(float percentToFill, float startingYPos, bool negative = false)
@@ -136,6 +146,43 @@ public class NumberLine : MonoBehaviour
         }
 
         this.fillUnitsCurrentlyDisplayed[yPos] = layerFillUnitObjects;
+    }
+
+    private void DestroyAllNumberLineFill()
+    {
+        //Create a copy of the keys to iterate over (since you cannot remove from a Dictionary you are iterating over)
+        float[] keys = new float[this.fillUnitsCurrentlyDisplayed.Count];
+        int i = 0;
+        foreach (float key in this.fillUnitsCurrentlyDisplayed.Keys)
+        {
+            keys[i] = key;
+            i++;
+        }
+
+        foreach (float yPos in keys)
+        {
+            DestroyNumberLineFillLayer(yPos);
+        }
+
+        if (this.fillUnitsCurrentlyDisplayed.Count != 0)
+        {
+            Debug.LogError("Did not successfully destroy all Number Line Fill Units");
+        }
+    }
+
+    //May use this later outside of DestroyAllNumberLineFill for animations
+    private void DestroyNumberLineFillLayer(float yPos)
+    {
+        if (!this.fillUnitsCurrentlyDisplayed.Remove(yPos, out Dictionary<float, GameObject> fillUnitsAtYPos))
+        {
+            Debug.LogError("No fill units currently at given Y Position: " + yPos);
+            return;
+        }
+
+        foreach (KeyValuePair<float, GameObject> fillUnitPair in fillUnitsAtYPos)
+        {
+            Destroy(fillUnitPair.Value);
+        }
     }
 
     private void DrawTickMarks()
