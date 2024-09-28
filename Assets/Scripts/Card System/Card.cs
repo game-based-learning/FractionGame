@@ -3,8 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 /*
- * Cards should be responsible for handling raycast blocking (Maybe setting their own transform? But honestly the 
- * CardManager already sets the card transform so maybe other classes should worry about that).
+ * Cards should be responsible for handling raycast blocking 
  */
 public class Card : MonoBehaviour, IPointerClickHandler
 {
@@ -21,11 +20,11 @@ public class Card : MonoBehaviour, IPointerClickHandler
             _canvasGroup.blocksRaycasts = true;
             transform.SetParent(value.transform);
             transform.localRotation = Quaternion.identity;
+            (transform as RectTransform).pivot = new Vector2(0.5f, 0.5f);
         }
     }
     
-    // Does the last position of the card necessarily need to be a card slot? My thought is no
-    private Transform _lastPosition;
+    private ICardHolder _lastPosition;
     
     private Image _cardIcon;
     private CanvasGroup _canvasGroup;    
@@ -46,5 +45,10 @@ public class Card : MonoBehaviour, IPointerClickHandler
             _canvasGroup.blocksRaycasts = false;
             CardManager.Instance.SetCarriedCard(this);
         }
+    }
+
+    public void SetActiveSlot()
+    {
+
     }
 }
