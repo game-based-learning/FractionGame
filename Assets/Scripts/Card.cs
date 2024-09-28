@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEditor.PackageManager.Requests;
 
 /*
- * Cards should be responsible for setting their own slot property, handling raycast blocking, and clearing previous slot data
- * (Maybe setting their own transform? But honestly the CardManager already sets the card transform so maybe other classes
- * should worry about that).
+ * Cards should be responsible for handling raycast blocking (Maybe setting their own transform? But honestly the 
+ * CardManager already sets the card transform so maybe other classes should worry about that).
  */
 public class Card : MonoBehaviour, IPointerClickHandler
 {
@@ -22,6 +20,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
             _activeSlot = value;
             _canvasGroup.blocksRaycasts = true;
             transform.SetParent(value.transform);
+            transform.localRotation = Quaternion.identity;
         }
     }
     
@@ -44,11 +43,8 @@ public class Card : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (ActiveSlot != null)
-                ActiveSlot.HeldCard = null;
-
             _canvasGroup.blocksRaycasts = false;
-            CardManager.instance.SetCarriedCard(this);
+            CardManager.Instance.SetCarriedCard(this);
         }
     }
 }
