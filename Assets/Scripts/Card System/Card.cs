@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
  */
 public class Card : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private CardData _cardData;
-    public CardData CardData => _cardData;
+    //[SerializeField] private CardData _cardData;
+    //public CardData CardData => _cardData;
+
+    public int value = 0;
 
     private CardSlot _activeSlot;
     public CardSlot ActiveSlot 
