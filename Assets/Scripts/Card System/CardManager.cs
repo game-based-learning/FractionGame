@@ -28,9 +28,7 @@ public class CardManager : MonoBehaviour
             Destroy(Instance.gameObject);
 
         _mousePosition = _inputs.actions.FindAction("Point");
-    }
-
-    #endregion
+    }    
 
     private void Update()
     {
@@ -39,6 +37,8 @@ public class CardManager : MonoBehaviour
 
         CarriedCard.transform.position = _mousePosition.ReadValue<Vector2>();
     }
+    
+    #endregion
     
     public void SetCarriedCard(Card card)
     {
