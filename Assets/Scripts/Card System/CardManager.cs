@@ -43,8 +43,8 @@ public class CardManager : MonoBehaviour
     public void SetCarriedCard(Card card)
     {
         // The CardManager should handle swapping cards
-        if (CarriedCard != null && card != null)
-            card.ActiveSlot.SetHeldCard(CarriedCard);         
+        if (card != null)
+            card.ActiveSlot.SetHeldCard(CarriedCard);
 
         // Carried card settings
         CarriedCard = card;

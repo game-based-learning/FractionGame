@@ -29,6 +29,7 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler, ICardHolder
 
         HeldCard = card;
         HeldCard.ActiveSlot = this;
+        HeldCard.SetCardTransform(transform);
 
         // I don't like having this line here but I'm not sure how else to tell the CardManager that it's not holding a card anymore
         CardManager.Instance.SetCarriedCard(null);

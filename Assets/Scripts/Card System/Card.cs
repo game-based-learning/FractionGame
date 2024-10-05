@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 /*
  * Cards should be responsible for handling raycast blocking 
@@ -12,21 +13,18 @@ public class Card : MonoBehaviour, IPointerClickHandler
 
     public int value = 0;
 
-    private CardSlot _activeSlot;
-    public CardSlot ActiveSlot 
+    private ICardHolder _activeSlot;
+    public ICardHolder ActiveSlot 
     { 
         get { return _activeSlot; }
         set 
         {
             _activeSlot = value;
             _canvasGroup.blocksRaycasts = true;
-            transform.SetParent(value.transform);
-            transform.localRotation = Quaternion.identity;
-            (transform as RectTransform).pivot = new Vector2(0.5f, 0.5f);
         }
     }
     
-    private ICardHolder _lastPosition;
+    private ICardHolder _lastSlot;
     
     private Image _cardIcon;
     private CanvasGroup _canvasGroup;    
@@ -37,6 +35,13 @@ public class Card : MonoBehaviour, IPointerClickHandler
         _cardIcon = GetComponent<Image>();
 
         //cardIcon.sprite = cardData.sprite;
+
+        // For now cards will check if they are in a slot
+        ICardHolder parentSlot = GetComponentInParent<ICardHolder>();
+        if (parentSlot != null)
+            ActiveSlot = parentSlot;
+
+        GetComponentInChildren<TMP_Text>().text = value.ToString();
     }
 
     // This function is only called when the card is picked up
@@ -49,8 +54,14 @@ public class Card : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void SetActiveSlot()
+    /// <summary>
+    /// Handles card transform re-parenting and re-positioning
+    /// </summary>
+    /// <param name="parent"></param>
+    public void SetCardTransform(Transform parent)
     {
-
+        transform.SetParent(parent);
+        transform.localRotation = Quaternion.identity;
+        (transform as RectTransform).pivot = new Vector2(0.5f, 0.5f);
     }
 }

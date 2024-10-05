@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,6 +9,8 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class CardDeck : MonoBehaviour, IPointerClickHandler, ICardHolder
 {
+    [SerializeField] private List<Card> cards;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -18,6 +21,14 @@ public class CardDeck : MonoBehaviour, IPointerClickHandler, ICardHolder
 
     public void SetHeldCard(Card card)
     {
-        throw new NotImplementedException();
+        // Check to see that a card is actually being carried
+        if (CardManager.Instance.CarriedCard == null)
+            return;
+
+        // The card deck doesn't actually need to store card instances for now
+        card.ActiveSlot = this;
+        card.SetCardTransform(transform);
+
+        CardManager.Instance.SetCarriedCard(null);
     }
 }
