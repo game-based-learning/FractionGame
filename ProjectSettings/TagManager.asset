@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: NumberLineBackground
+    uniqueID: 743111041
+    locked: 0
+  - name: NumberLineFill
+    uniqueID: 3606414095
+    locked: 0
+  - name: NumberLineTicks
+    uniqueID: 3510661261
+    locked: 0
