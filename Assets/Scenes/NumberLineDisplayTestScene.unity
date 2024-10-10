@@ -170,14 +170,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379b0bf17f91ae54e9787b81d45d9fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberLineFillUnitPrefab: {fileID: 1315623135285623023, guid: 9cd697e1207fdeb4a809fe499daeaa16, type: 3}
+  numberLineFillUnitPrefab: {fileID: 1315623135285623023, guid: 67398a1d2681b9b4f89e9282a1081bf6, type: 3}
   numberLineFillParent: {fileID: 1682881043}
   firstFillUnitPosition: {x: -0.875, y: -3.375}
   firstNegativeFillUnitYValue: 3.375
   fillWidth: 2
   maxFillHeight: 7
-  largeTickPrefab: {fileID: 6312786041309741623, guid: 8b6b2420826fae942804c2e7d8c840bb, type: 3}
-  smallTickPrefab: {fileID: 6312786041309741623, guid: 4b590bddfc8a9ff40bacbc4d7552cb93, type: 3}
+  largeTickPrefab: {fileID: 6312786041309741623, guid: 8b5cde8b6a642f14380e5a9dd448eea0, type: 3}
+  smallTickPrefab: {fileID: 6312786041309741623, guid: 5456a485d143a5e49be7ecb4776e93f2, type: 3}
   tickMarksParent: {fileID: 1340185342}
   originTickPosition: {x: 0, y: -3.5}
   maxTickYPosition: 3.5

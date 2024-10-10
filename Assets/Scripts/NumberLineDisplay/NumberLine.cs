@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -8,15 +9,18 @@ public class NumberLine : MonoBehaviour
     [SerializeField] private GameObject numberLineFillUnitPrefab;
     //Prefab could be a properly set up particle or just a square with a texture
     [SerializeField] private GameObject numberLineFillParent;
-    
+
+    [Space]
     [Tooltip("Position of the center of the fill unit in the bottom left corner")]
     [SerializeField] private Vector2 firstFillUnitPosition;
     [Tooltip("Y Value of the Position of the center of the fill unit in the top left corner")]
     [SerializeField] private float firstNegativeFillUnitYValue;
 
+    [Space]
     [SerializeField] private float fillWidth;
     [SerializeField] private float maxFillHeight;
 
+    [Space]
     [SerializeField] private GameObject largeTickPrefab;
     [SerializeField] private GameObject smallTickPrefab;
     [SerializeField] private GameObject tickMarksParent;
@@ -38,10 +42,11 @@ public class NumberLine : MonoBehaviour
     public float LineRangeMin
     {
         get { return lineRangeMin; }
-        set { 
-                lineRangeMin = value;
-                //DrawTickMarks();
-            }
+        set 
+        { 
+            lineRangeMin = value;
+            //DrawTickMarks();
+        }
     }
 
     public float LineRangeMax
@@ -67,9 +72,9 @@ public class NumberLine : MonoBehaviour
     }
 
     /// <summary>
-    /// ( y position, ( x position, numberLineFillUnit instantiated object) )
+    /// ( y position, parent object holding the fill unit objects for that row )
     /// </summary>
-    private Dictionary<float, Dictionary<float, GameObject>> fillUnitsCurrentlyDisplayed = new Dictionary<float, Dictionary<float, GameObject>>();
+    private Dictionary<float, GameObject> fillUnitsCurrentlyDisplayed = new Dictionary<float, GameObject>();
     /// <summary>
     /// The Y Position of the instantiated fill object furthest from the firstFillUnitPosition
     /// </summary>
@@ -149,14 +154,13 @@ public class NumberLine : MonoBehaviour
     private void DrawNumberLineFillLayer(float yPos)
     {
         float xPos = this.firstFillUnitPosition.x;
-        Dictionary<float, GameObject> layerFillUnitObjects = new Dictionary<float, GameObject>();
+        GameObject layerFillUnitObjects = Instantiate(this.numberLineFillUnitPrefab,
+                new Vector2(xPos, yPos), Quaternion.identity, this.numberLineFillParent.transform);
 
         for (int i = 0; i < this.numFillUnitsWidth; i++)
         {
             GameObject newFillUnitObject = Instantiate(this.numberLineFillUnitPrefab,
-                new Vector2(xPos, yPos), Quaternion.identity, this.numberLineFillParent.transform);
-
-            layerFillUnitObjects[xPos] = newFillUnitObject;
+                new Vector2(xPos, yPos), Quaternion.identity, layerFillUnitObjects.transform);
 
             //Debug.Log("Drew at Pos: (" + xPos + ", " + yPos + ")");
 
@@ -169,13 +173,15 @@ public class NumberLine : MonoBehaviour
     private void DestroyAllNumberLineFill()
     {
         //Create a copy of the keys to iterate over (since you cannot remove from a Dictionary you are iterating over)
-        float[] keys = new float[this.fillUnitsCurrentlyDisplayed.Count];
+        /*float[] keys = new float[this.fillUnitsCurrentlyDisplayed.Count];
         int i = 0;
         foreach (float key in this.fillUnitsCurrentlyDisplayed.Keys)
         {
             keys[i] = key;
             i++;
-        }
+        }*/
+
+        float[] keys = this.fillUnitsCurrentlyDisplayed.Keys.ToArray();
 
         foreach (float yPos in keys)
         {
@@ -191,16 +197,19 @@ public class NumberLine : MonoBehaviour
     //May use this later outside of DestroyAllNumberLineFill for animations
     private void DestroyNumberLineFillLayer(float yPos)
     {
-        if (!this.fillUnitsCurrentlyDisplayed.Remove(yPos, out Dictionary<float, GameObject> fillUnitsAtYPos))
+        if (!this.fillUnitsCurrentlyDisplayed.Remove(yPos, out GameObject fillUnitsAtYPos))
         {
             Debug.LogError("No fill units currently at given Y Position: " + yPos);
             return;
         }
 
-        foreach (KeyValuePair<float, GameObject> fillUnitPair in fillUnitsAtYPos)
+        for (int i = 0; i < fillUnitsAtYPos.transform.childCount; i++)
         {
-            Destroy(fillUnitPair.Value);
+            GameObject fillUnit = fillUnitsAtYPos.transform.GetChild(0).gameObject;
+            Destroy(fillUnit);
         }
+
+        Destroy(fillUnitsAtYPos);
     }
 
     private void DrawTickMarks()
