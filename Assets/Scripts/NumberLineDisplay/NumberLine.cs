@@ -9,6 +9,7 @@ public class NumberLine : MonoBehaviour
     [SerializeField] private GameObject numberLineFillUnitPrefab;
     //Prefab could be a properly set up particle or just a square with a texture
     [SerializeField] private GameObject numberLineFillParent;
+    [SerializeField] private GameObject fillLayerPrefab;
 
     [Space]
     [Tooltip("Position of the center of the fill unit in the bottom left corner")]
@@ -74,6 +75,11 @@ public class NumberLine : MonoBehaviour
     /// <summary>
     /// ( y position, parent object holding the fill unit objects for that row )
     /// </summary>
+    public Dictionary<float, GameObject> FillUnits { get { return fillUnitsCurrentlyDisplayed; } }
+
+    /// <summary>
+    /// ( y position, parent object holding the fill unit objects for that row )
+    /// </summary>
     private Dictionary<float, GameObject> fillUnitsCurrentlyDisplayed = new Dictionary<float, GameObject>();
     /// <summary>
     /// The Y Position of the instantiated fill object furthest from the firstFillUnitPosition
@@ -128,6 +134,21 @@ public class NumberLine : MonoBehaviour
         DrawNumberLineFill(percentToFill, startingYPos, negative);
     }
 
+    /// <summary>
+    /// Use this to destroy and redraw fill units at the Y Positions saved in the Dictionary
+    /// </summary>
+    public void RefreshInfo()
+    {
+        foreach (KeyValuePair<float, GameObject> fillRow in this.fillUnitsCurrentlyDisplayed)
+        {
+            //Reset row object position
+            fillRow.Value.transform.position = new Vector2(firstFillUnitPosition.x, fillRow.Key);
+
+            DestroyNumberLineFillLayer(fillRow.Value);
+            DrawNumberLineFillLayer(fillRow.Value, fillRow.Key);
+        }
+    }
+
     private void DrawNumberLineFill(float percentToFill, float startingYPos, bool negative = false)
     {
         this.numFillUnitsHeight = (int) ( percentToFill * this.maxFillHeight / this.fillUnitHeight );
@@ -154,8 +175,18 @@ public class NumberLine : MonoBehaviour
     private void DrawNumberLineFillLayer(float yPos)
     {
         float xPos = this.firstFillUnitPosition.x;
-        GameObject layerFillUnitObjects = Instantiate(this.numberLineFillUnitPrefab,
+        GameObject layerFillUnitObjects = Instantiate(this.fillLayerPrefab,
                 new Vector2(xPos, yPos), Quaternion.identity, this.numberLineFillParent.transform);
+
+        DrawNumberLineFillLayer(layerFillUnitObjects, yPos);
+
+        this.fillUnitsCurrentlyDisplayed[yPos] = layerFillUnitObjects;
+    }
+
+    //unlike the method this overloads, does not create layerFillUnitObjects or add it to the dictionary
+    private void DrawNumberLineFillLayer(GameObject layerFillUnitObjects, float yPos)
+    {
+        float xPos = this.firstFillUnitPosition.x;
 
         for (int i = 0; i < this.numFillUnitsWidth; i++)
         {
@@ -166,21 +197,10 @@ public class NumberLine : MonoBehaviour
 
             xPos += this.xDisplacementForNewFill;
         }
-
-        this.fillUnitsCurrentlyDisplayed[yPos] = layerFillUnitObjects;
     }
 
     private void DestroyAllNumberLineFill()
     {
-        //Create a copy of the keys to iterate over (since you cannot remove from a Dictionary you are iterating over)
-        /*float[] keys = new float[this.fillUnitsCurrentlyDisplayed.Count];
-        int i = 0;
-        foreach (float key in this.fillUnitsCurrentlyDisplayed.Keys)
-        {
-            keys[i] = key;
-            i++;
-        }*/
-
         float[] keys = this.fillUnitsCurrentlyDisplayed.Keys.ToArray();
 
         foreach (float yPos in keys)
@@ -203,13 +223,19 @@ public class NumberLine : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < fillUnitsAtYPos.transform.childCount; i++)
-        {
-            GameObject fillUnit = fillUnitsAtYPos.transform.GetChild(0).gameObject;
-            Destroy(fillUnit);
-        }
+        //DestroyNumberLineFillLayer(fillUnitsAtYPos);
 
         Destroy(fillUnitsAtYPos);
+    }
+
+    //unlike the method this overloads, does not destroy fillUnitsAtYPos or remove it from the dictionary
+    private void DestroyNumberLineFillLayer(GameObject fillUnitsAtYPos)
+    {
+        for (int i = 0; i < fillUnitsAtYPos.transform.childCount; i++)
+        {
+            GameObject fillUnit = fillUnitsAtYPos.transform.GetChild(i).gameObject;
+            Destroy(fillUnit);
+        }
     }
 
     private void DrawTickMarks()
@@ -282,5 +308,28 @@ public class NumberLine : MonoBehaviour
             this.tickMarkObjects.RemoveAt(index);
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// Adds the fill units of the given NumberLine to the dictionary in this
+    /// </summary>
+    public void Add(NumberLine otherLine, bool negative = false)
+    {
+        float yPos = this.currentYFillPosition;
+        foreach (KeyValuePair<float, GameObject> row in otherLine.FillUnits)
+        {
+            if (!negative)
+            {
+                yPos = this.currentYFillPosition + row.Key;
+            }
+            else
+            {
+                yPos = this.currentYFillPosition - row.Key;
+            }
+
+            this.fillUnitsCurrentlyDisplayed[yPos] = row.Value;
+        }
+
+        this.currentYFillPosition = yPos;
     }
 }

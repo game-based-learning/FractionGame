@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberLineFillUnitPrefab: {fileID: 1315623135285623023, guid: 67398a1d2681b9b4f89e9282a1081bf6, type: 3}
   numberLineFillParent: {fileID: 1682881043}
+  fillLayerPrefab: {fileID: 1656315231065721496, guid: 6fe1f3914eb9efc4e8276e61cfe0df50, type: 3}
   firstFillUnitPosition: {x: -0.875, y: -3.375}
   firstNegativeFillUnitYValue: 3.375
   fillWidth: 2
