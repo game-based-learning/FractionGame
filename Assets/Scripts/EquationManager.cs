@@ -1,19 +1,5 @@
 using UnityEngine;
-
-/*
-* Fraction struct contains a numerator and denominator of which are both integers.
-* The value is calculated by dividing the numerator by the denominator.
-*/
-public struct Fraction {
-    public Fraction(int Numerator, int Denominator) {
-        this.numerator = Numerator;
-        this.denominator = Denominator;
-        value = Numerator / Denominator;
-    }
-    public int numerator { get; }
-    public int denominator { get; }
-    public int value { get; }
-}
+using Fraction.cs;
 /*
 * Singleton class used to hold an equation's value and solution.
 */
