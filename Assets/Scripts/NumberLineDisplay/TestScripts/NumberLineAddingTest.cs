@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class NumberLineAddingTest : MonoBehaviour
 {
-    [SerializeField] private NumberLine mainNumberLine;
+    [SerializeField] private NumberLine firstNumberLine;
     [SerializeField] private NumberLine secondNumberLine;
+    [SerializeField] private NumberLine answerNumberLine;
     [Space]
-    [SerializeField] float mainNumberLineValue;
+    [SerializeField] float firstNumberLineValue;
     [SerializeField] float secondNumberLineValue;
+    [SerializeField] float answerNumberLineValue;
     [Space]
     [SerializeField] GameObject operationAnimator;
 
@@ -19,8 +21,9 @@ public class NumberLineAddingTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mainNumberLine.DisplayInfo(mainNumberLineValue);
+        firstNumberLine.DisplayInfo(firstNumberLineValue);
         secondNumberLine.DisplayInfo(secondNumberLineValue);
+        answerNumberLine.DisplayInfo(answerNumberLineValue);
     }
 
 
@@ -31,7 +34,8 @@ public class NumberLineAddingTest : MonoBehaviour
 
         if (time > 2 && shouldAnimate)
         {
-            operationAnimator.GetComponent<IOperationAnimator>().AnimateOperation();
+            float answer = firstNumberLineValue + secondNumberLineValue;
+            operationAnimator.GetComponent<IOperationAnimator>().AnimateOperation(answer);
             shouldAnimate = false;
         }
     }

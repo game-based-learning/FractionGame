@@ -72,6 +72,8 @@ public class NumberLine : MonoBehaviour
         set { numSmallTicksBetweenLargeTicks = value; }
     }
 
+    public GameObject NumberLineFillParent {  get { return this.numberLineFillParent; } }
+
     /// <summary>
     /// ( y position, parent object holding the fill unit objects for that row )
     /// </summary>
@@ -147,6 +149,15 @@ public class NumberLine : MonoBehaviour
             DestroyNumberLineFillLayer(fillRow.Value);
             DrawNumberLineFillLayer(fillRow.Value, fillRow.Key);
         }
+
+        Debug.Log("Refreshed Info");
+        StartCoroutine(Test());
+    }
+
+    IEnumerator Test()
+    {
+        yield return new WaitForSeconds(.5f);
+        Debug.Log("hi");
     }
 
     private void DrawNumberLineFill(float percentToFill, float startingYPos, bool negative = false)
