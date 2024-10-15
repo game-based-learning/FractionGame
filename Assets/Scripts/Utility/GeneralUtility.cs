@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public static class GeneralUtility
 {
     public static bool IsInRange(float value, float min, float max)
     {
-        return value >= min && value <= max;
+        //return value >= min && value <= max;
         //Might consider updating this later if needed to handle the floating point comparison in a safer way
+        return Mathf.Approximately(Mathf.Clamp(value, min, max), value);
     }
 
     /// <summary>
