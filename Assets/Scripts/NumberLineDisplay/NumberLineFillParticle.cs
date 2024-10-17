@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NumberLineFillParticle : MonoBehaviour
@@ -7,7 +8,7 @@ public class NumberLineFillParticle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
     }
     //float time = 0;
     //bool first = false;
