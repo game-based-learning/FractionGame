@@ -1,14 +1,21 @@
 /*
 * Public class for Fractions
 */
-public class Fraction 
+using UnityEngine;
+
+public class Fraction: MonoBehaviour
 {
-    public Fraction(int Numerator, int Denominator) {
+    [SerializeField] private NumberLine numberLine;
+
+    public void setFraction(int Numerator, int Denominator)
+    {
         this.numerator = Numerator;
         this.denominator = Denominator;
-        value = Numerator / Denominator;
+        value = (float) Numerator / Denominator;
+        numberLine.DisplayInfo(value);
     }
-    public int numerator { get; }
-    public int denominator { get; }
-    public int value { get; }
+
+    public int numerator { get; protected set; }
+    public int denominator { get; protected set; }
+    public float value { get; protected set; }
 }
