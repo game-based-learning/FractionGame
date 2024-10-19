@@ -30,7 +30,9 @@ public class EquationManager: MonoBehaviour
     }
 
     private void Start() {
-     
+        fraction1.setFraction(0, 1);
+        fraction2.setFraction(0, 1);
+        answer.setFraction(0, 1);
     }
 
     // Under the assumption that the equation manager will be notified whenever a submission is made, this function checks the given fractions to the answer

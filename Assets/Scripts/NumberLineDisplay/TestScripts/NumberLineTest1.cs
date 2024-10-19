@@ -10,6 +10,6 @@ public class NumberLineTest1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        equationManager.CheckEquation(1, 2, 1, 4);
+        equationManager.CheckEquation(1, 4, 1, 4);
     }
 }
