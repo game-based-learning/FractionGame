@@ -22,7 +22,8 @@ public class EquationManager: MonoBehaviour
     }
 
     private void OnEnable() {
-
+        fraction1.updated += CheckEquation;
+        fraction2.updated += CheckEquation;
     }
 
     private void OnDisable() {
@@ -30,21 +31,21 @@ public class EquationManager: MonoBehaviour
     }
 
     private void Start() {
-        fraction1.setFraction(0, 1);
-        fraction2.setFraction(0, 1);
-        answer.setFraction(0, 1);
+
     }
 
     // Under the assumption that the equation manager will be notified whenever a submission is made, this function checks the given fractions to the answer
-    public void CheckEquation(int n1, int dn1, int n2, int dn2) {
-        fraction1.setFraction(n1, dn1);
-        fraction2.setFraction(n2, dn2);
+    public void CheckEquation() {
+        if (fraction1.value == null || fraction2.value == null)
+        {
+            return;
+        }
         // Calculate the value of the answer fraction
-        answer.setFraction((n1 * dn2 + n2 * dn1), (dn1 * dn2));
+        answer.setFraction((fraction1.numerator * fraction2.denominator + fraction2.numerator * fraction2.denominator), (fraction1.denominator * fraction2.denominator));
 
         // TODO: Ask numberline to draw the sun of the fractions
 
-        if (answer.value == 0.75) {
+        if (answer.value == 0.5) {
             Debug.Log("Correct!");
             // Answer is correct
             // TODO: Do something
