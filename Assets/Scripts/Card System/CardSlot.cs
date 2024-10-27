@@ -8,6 +8,9 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler, ICardHolder
 {
     public Card HeldCard { get; set; }
 
+    public delegate void OnCardSlotted(Card card);
+    public event OnCardSlotted cardSlotted;
+
     /*
      * Currently this event only happens when HeldCard is empty, because otherwise cards have their own pointer
      * click events. However, I might change this so that the CardSlot controls when a card is able to be
@@ -15,6 +18,7 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler, ICardHolder
      */
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("Slot clicked");
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             SetHeldCard(CardManager.Instance.CarriedCard);
@@ -23,15 +27,17 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler, ICardHolder
 
     public void SetHeldCard(Card card)
     {
-        // Check to see that a card is actually being carried
-        if (CardManager.Instance.CarriedCard == null) 
-            return;
-
         HeldCard = card;
-        HeldCard.ActiveSlot = this;
-        HeldCard.SetCardTransform(transform);
+        cardSlotted?.Invoke(HeldCard);
 
-        // I don't like having this line here but I'm not sure how else to tell the CardManager that it's not holding a card anymore
-        CardManager.Instance.SetCarriedCard(null);
+        // It's possible for the passed card to be null
+        if (card != null)
+        {
+            HeldCard.ActiveSlot = this;
+            HeldCard.SetCardTransform(transform);
+
+            // I don't like having this line here but I'm not sure how else to tell the CardManager that it's not holding a card anymore
+            CardManager.Instance.SetCarriedCard(null);
+        }
     }
 }
