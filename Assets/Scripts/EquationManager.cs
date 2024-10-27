@@ -16,6 +16,10 @@ public class EquationManager: MonoBehaviour
     [SerializeField] private Fraction answer;
 
     [Space]
+    [SerializeField] private float answerNumerator;
+    [SerializeField] private float answerDenominator;
+
+    [Space]
     [SerializeField] private Animator answerAnim;
 
     private void Awake() 
@@ -41,7 +45,7 @@ public class EquationManager: MonoBehaviour
 
         // TODO: Ask numberline to draw the sun of the fractions
 
-        if (answer.value == 0.5) 
+        if (answer.value == answerNumerator / answerDenominator) 
         {
             Debug.Log("Correct!");
             answerAnim.Play("success_animation");
@@ -50,8 +54,7 @@ public class EquationManager: MonoBehaviour
         {
             Debug.Log("Wrong");
             answerAnim.Play("fail_animation");
-        }
-        
+        }        
 
         // TODO: Consider what to do when the answer is wrong
     }
