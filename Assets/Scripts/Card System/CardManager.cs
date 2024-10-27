@@ -35,7 +35,8 @@ public class CardManager : MonoBehaviour
         if (CarriedCard == null)
             return;
 
-        CarriedCard.transform.position = _mousePosition.ReadValue<Vector2>();
+        Vector3 worldCardPosition = Camera.main.ScreenToWorldPoint(_mousePosition.ReadValue<Vector2>());
+        CarriedCard.transform.position = new Vector3(worldCardPosition.x, worldCardPosition.y, 0f);
     }
     
     #endregion

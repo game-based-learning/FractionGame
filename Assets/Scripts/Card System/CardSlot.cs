@@ -18,6 +18,7 @@ public class CardSlot : MonoBehaviour, IPointerClickHandler, ICardHolder
      */
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("Slot clicked");
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             SetHeldCard(CardManager.Instance.CarriedCard);
