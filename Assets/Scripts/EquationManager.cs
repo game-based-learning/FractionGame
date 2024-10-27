@@ -1,7 +1,5 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Fraction;
+
 /*
 * Singleton class used to hold an equation's value and solution.
 */
@@ -17,25 +15,23 @@ public class EquationManager: MonoBehaviour
     [SerializeField] private Fraction fraction2;
     [SerializeField] private Fraction answer;
 
-    private void Awake() {
+    [Space]
+    [SerializeField] private Animator answerAnim;
+
+    private void Awake() 
+    {
         instance = this;
     }
 
-    private void OnEnable() {
-        fraction1.updated += CheckEquation;
-        fraction2.updated += CheckEquation;
-    }
-
-    private void OnDisable() {
-
-    }
-
-    private void Start() {
-
+    private void OnEnable() 
+    {
+        //fraction1.updated += CheckEquation;
+        //fraction2.updated += CheckEquation;
     }
 
     // Under the assumption that the equation manager will be notified whenever a submission is made, this function checks the given fractions to the answer
-    public void CheckEquation() {
+    public void CheckEquation() 
+    {
         if (fraction1.value == null || fraction2.value == null)
         {
             return;
@@ -45,12 +41,15 @@ public class EquationManager: MonoBehaviour
 
         // TODO: Ask numberline to draw the sun of the fractions
 
-        if (answer.value == 0.5) {
+        if (answer.value == 0.5) 
+        {
             Debug.Log("Correct!");
-            // Answer is correct
-            // TODO: Do something
-        } else {
+            answerAnim.Play("success_animation");
+        } 
+        else 
+        {
             Debug.Log("Wrong");
+            answerAnim.Play("fail_animation");
         }
         
 

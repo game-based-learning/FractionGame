@@ -636,6 +636,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332517513}
   m_CullTransparentMesh: 1
+--- !u!95 &403129131 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9002943184622948645, guid: 499538db7ef4c704eb60cbca4fe84202, type: 3}
+  m_PrefabInstance: {fileID: 1591832472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &441738368 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6662708026035231147, guid: 233ea7c07dd563f42a403045f00ea88f, type: 3}
@@ -1198,7 +1203,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1150590454}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1878367395}
+        m_TargetAssemblyTypeName: EquationManager, Assembly-CSharp
+        m_MethodName: CheckEquation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1150590454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1810,6 +1827,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5753738516228401082, guid: 499538db7ef4c704eb60cbca4fe84202, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753738516228401082, guid: 499538db7ef4c704eb60cbca4fe84202, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753738516228401082, guid: 499538db7ef4c704eb60cbca4fe84202, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -784306035
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753738516228401082, guid: 499538db7ef4c704eb60cbca4fe84202, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
@@ -2060,6 +2089,7 @@ MonoBehaviour:
   fraction1: {fileID: 792136825}
   fraction2: {fileID: 1969722590}
   answer: {fileID: 1212272401}
+  answerAnim: {fileID: 403129131}
 --- !u!4 &1878367396
 Transform:
   m_ObjectHideFlags: 0
