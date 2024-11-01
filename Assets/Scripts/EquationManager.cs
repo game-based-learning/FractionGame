@@ -14,6 +14,7 @@ public class EquationManager: MonoBehaviour
     [SerializeField] private Fraction fraction1;
     [SerializeField] private Fraction fraction2;
     [SerializeField] private Fraction answer;
+    [SerializeField] private char operation;
 
     [Space]
     [SerializeField] private float answerNumerator;
@@ -41,7 +42,13 @@ public class EquationManager: MonoBehaviour
             return;
         }
         // Calculate the value of the answer fraction
-        answer.setFraction((fraction1.numerator * fraction2.denominator + fraction2.numerator * fraction2.denominator), (fraction1.denominator * fraction2.denominator));
+        if (operation == '+')
+        {
+            answer.setFraction((fraction1.numerator * fraction2.denominator + fraction2.numerator * fraction1.denominator), (fraction1.denominator * fraction2.denominator));
+        } else
+        {
+            answer.setFraction((fraction1.numerator * fraction2.denominator - fraction2.numerator * fraction1.denominator), (fraction1.denominator * fraction2.denominator));
+        }
 
         // TODO: Ask numberline to draw the sun of the fractions
 
