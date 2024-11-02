@@ -1,3 +1,4 @@
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 /*
@@ -21,6 +22,7 @@ public class EquationManager: MonoBehaviour
 
     [Space]
     [SerializeField] private Animator answerAnim;
+    [SerializeField] private MessageBoxManager messageBox;
 
     private void Awake() 
     {
@@ -47,12 +49,12 @@ public class EquationManager: MonoBehaviour
 
         if (answer.value == answerNumerator / answerDenominator) 
         {
-            Debug.Log("Correct!");
+            messageBox.ChangeMessage("Congratulations!", "Your answer is correct!");
             answerAnim.Play("success_animation");
         } 
         else 
         {
-            Debug.Log("Wrong");
+            messageBox.ChangeMessage("Try again", "Your is incorrect.");
             answerAnim.Play("fail_animation");
         }        
 
