@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*
 * Singleton class used to hold an equation's value and solution.
@@ -25,7 +26,17 @@ public class EquationManager: MonoBehaviour
     [SerializeField] private Animator answerAnim;
     [SerializeField] private GameObject opAnimatorObj;
 
+    // Originally I was going to have one event that gave a boolean but I figured I would just make two
+    public delegate void OnAnswerChecked();
+    public event OnAnswerChecked solvedPuzzle;
+    public event OnAnswerChecked failedPuzzle;
+
+    public delegate void OnReset();
+    public event OnReset resetState;
+
     private IOperationAnimator opAnimator;
+
+    private bool isChecking;
 
     private void Awake() 
     {
@@ -49,10 +60,15 @@ public class EquationManager: MonoBehaviour
     // Under the assumption that the equation manager will be notified whenever a submission is made, this function checks the given fractions to the answer
     public void CheckEquation() 
     {
-        if (fraction1.value == null || fraction2.value == null)
-        {
+        // No checking while animations are playing
+        if (isChecking)
             return;
-        }
+
+        if (fraction1.value == null || fraction2.value == null)
+            return;
+
+        isChecking = true;
+
         // Calculate the value of the answer fraction
         if (operation == '+')
         {
@@ -76,11 +92,14 @@ public class EquationManager: MonoBehaviour
         {
             Debug.Log("Correct!");
             answerAnim.Play("success_animation");
+            solvedPuzzle?.Invoke();
+            isChecking = false;
         }
         else
         {
             Debug.Log("Wrong");
             answerAnim.Play("fail_animation");
+            failedPuzzle?.Invoke();
 
             StartCoroutine(HandleFailState());
         }
@@ -97,5 +116,8 @@ public class EquationManager: MonoBehaviour
         fraction2.setFraction(fraction2.numerator, fraction2.denominator);
 
         answer.setFraction(0, 0);
+
+        resetState?.Invoke();
+        isChecking = false;
     }
 }

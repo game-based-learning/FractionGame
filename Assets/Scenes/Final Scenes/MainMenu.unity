@@ -482,7 +482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_fontStyle
@@ -490,7 +490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_fontSizeBase
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_enableAutoSizing
@@ -643,7 +643,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.2564912, g: 0.18022428, b: 0.2830189, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -957,7 +957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_fontStyle
@@ -965,7 +965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_fontSizeBase
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9112241835415306650, guid: e0b2756b79777d8418e25560d1e162eb, type: 3}
       propertyPath: m_enableAutoSizing
