@@ -10,6 +10,10 @@ public class FeedbackText : MonoBehaviour
     [SerializeField] private Fraction fraction1;
     [SerializeField] private Fraction fraction2;
 
+    [Space]
+    [SerializeField] private NumberLine beaker1;
+    [SerializeField] private NumberLine beaker2;
+
     private TMP_Text textbox;
 
     private void Awake()
@@ -28,6 +32,9 @@ public class FeedbackText : MonoBehaviour
             fraction1.updated += CheckDenominators;
             fraction2.updated += CheckDenominators;
         }
+
+        beaker1.beakerOverflow += BeakerOverflow;
+        beaker2.beakerOverflow += BeakerOverflow;
     }
 
     private void OnDisable()
@@ -41,6 +48,9 @@ public class FeedbackText : MonoBehaviour
             fraction1.updated -= CheckDenominators;
             fraction2.updated -= CheckDenominators;
         }
+
+        beaker1.beakerOverflow -= BeakerOverflow;
+        beaker2.beakerOverflow -= BeakerOverflow;
     }
 
     private void Start()
@@ -70,6 +80,14 @@ public class FeedbackText : MonoBehaviour
         if ((fraction1.denominator != fraction2.denominator) && fraction1.denominator != 0 && fraction2.denominator != 0)
             SetText("For some puzzles, finding the answer would require one to find a common denominator. This prototype " +
                 "doesn't include such functionality, but we plan to implement it in the next iteration.");
+        else
+            SetText(string.Empty);
+    }
+
+    private void BeakerOverflow(bool didOverflow)
+    {
+        if (didOverflow)
+            SetText("That value is too large for a beaker of this size!");
         else
             SetText(string.Empty);
     }

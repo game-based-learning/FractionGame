@@ -556,6 +556,8 @@ MonoBehaviour:
   shouldCheckDenominators: 1
   fraction1: {fileID: 1301805766}
   fraction2: {fileID: 849585316}
+  beaker1: {fileID: 1301805767}
+  beaker2: {fileID: 849585317}
 --- !u!114 &139672211
 MonoBehaviour:
   m_ObjectHideFlags: 0
