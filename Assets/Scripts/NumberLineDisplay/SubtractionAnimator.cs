@@ -9,17 +9,21 @@ public class SubtractionAnimator : MonoBehaviour, IOperationAnimator
     [SerializeField] private NumberLine answerNumberLine;
     [SerializeField] private GameObject subtractionSign;
     [SerializeField] private GameObject equalSign;
+
     [Space]
     [Tooltip("Where to move the fill out of the firstNumberLine to drop it in the answerNumberLine")]
     [SerializeField] private Vector2 firstfillDisplacement;
     [Tooltip("Where to move the fill out of the secondNumberLine to drop it in the answerNumberLine")]
     [SerializeField] private Vector2 secondfillDisplacement;
     [SerializeField] private float fillMoveAmount = 0.1f;
+
     [Space]
     [Tooltip("Time Before DeActivating everything except the Answer Number Line after moving particles")]
     [SerializeField] private float timeBeforeRemove;
     [Tooltip("Time Before Resetting the Answer Number Line after moving the particles")]
     [SerializeField] private float timeBeforeReset;
+
+    public event IOperationAnimator.OnFinished animatedParticles;
 
     public void AnimateOperation(float answer)
     {
@@ -146,5 +150,14 @@ public class SubtractionAnimator : MonoBehaviour, IOperationAnimator
                 childObject.SetActive(false);
             }
         }
+    }
+
+    public void ResetAnimationState()
+    {
+        //subtractionSign.SetActive(false);
+        //equalSign.SetActive(false);
+
+        firstNumberLine.NumberLineFillParent.SetActive(true);
+        secondNumberLine.NumberLineFillParent.SetActive(true);
     }
 }

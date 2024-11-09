@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /*
@@ -22,16 +23,27 @@ public class EquationManager: MonoBehaviour
 
     [Space]
     [SerializeField] private Animator answerAnim;
+    [SerializeField] private GameObject opAnimatorObj;
+
+    private IOperationAnimator opAnimator;
 
     private void Awake() 
     {
         instance = this;
+
+        opAnimator = opAnimatorObj.GetComponent<IOperationAnimator>();
     }
 
     private void OnEnable() 
     {
         //fraction1.updated += CheckEquation;
         //fraction2.updated += CheckEquation;
+        opAnimator.animatedParticles += CheckValueAnimation;
+    }
+
+    private void OnDisable()
+    {
+        opAnimator.animatedParticles -= CheckValueAnimation;
     }
 
     // Under the assumption that the equation manager will be notified whenever a submission is made, this function checks the given fractions to the answer
@@ -44,25 +56,46 @@ public class EquationManager: MonoBehaviour
         // Calculate the value of the answer fraction
         if (operation == '+')
         {
-            answer.setFraction((fraction1.numerator * fraction2.denominator + fraction2.numerator * fraction1.denominator), (fraction1.denominator * fraction2.denominator));
-        } else
+            answer.setFraction((fraction1.numerator * fraction2.denominator + fraction2.numerator * fraction1.denominator), (fraction1.denominator * fraction2.denominator), false);
+        } 
+        else
         {
-            answer.setFraction((fraction1.numerator * fraction2.denominator - fraction2.numerator * fraction1.denominator), (fraction1.denominator * fraction2.denominator));
+            answer.setFraction((fraction1.numerator * fraction2.denominator - fraction2.numerator * fraction1.denominator), (fraction1.denominator * fraction2.denominator), false);
         }
 
         // TODO: Ask numberline to draw the sun of the fractions
+        
+        opAnimator.AnimateOperation(answer.value.Value);        
 
-        if (answer.value == answerNumerator / answerDenominator) 
+        // TODO: Consider what to do when the answer is wrong
+    }
+
+    private void CheckValueAnimation()
+    {
+        if (answer.value == answerNumerator / answerDenominator)
         {
             Debug.Log("Correct!");
             answerAnim.Play("success_animation");
-        } 
-        else 
+        }
+        else
         {
             Debug.Log("Wrong");
             answerAnim.Play("fail_animation");
-        }        
 
-        // TODO: Consider what to do when the answer is wrong
+            StartCoroutine(HandleFailState());
+        }
+    }
+
+    // This is terrible, change this later
+    private IEnumerator HandleFailState()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        opAnimator.ResetAnimationState();
+
+        fraction1.setFraction(fraction1.numerator, fraction1.denominator);
+        fraction2.setFraction(fraction2.numerator, fraction2.denominator);
+
+        answer.setFraction(0, 0);
     }
 }

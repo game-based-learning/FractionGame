@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class NumberLineFillParticle : MonoBehaviour
 {
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
     //float time = 0;
     //bool first = false;
@@ -32,11 +39,12 @@ public class NumberLineFillParticle : MonoBehaviour
 
     public void ActivatePhysicsResponse()
     {
-        GetComponent<Rigidbody2D>().isKinematic = false;
+        rb.isKinematic = false;
     }
 
     public void DeActivatePhysicsResponse()
     {
-        GetComponent<Rigidbody2D>().isKinematic = true;
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
     }
 }

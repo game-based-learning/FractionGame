@@ -9,17 +9,21 @@ public class AdditionAnimator : MonoBehaviour, IOperationAnimator
     [SerializeField] private NumberLine answerNumberLine;
     [SerializeField] private GameObject additionSign;
     [SerializeField] private GameObject equalSign;
+
     [Space]
     [Tooltip("Where to move the fill out of the firstNumberLine to drop it in the answerNumberLine")]
     [SerializeField] private Vector2 firstfillDisplacement;
     [Tooltip("Where to move the fill out of the secondNumberLine to drop it in the answerNumberLine")]
     [SerializeField] private Vector2 secondfillDisplacement;
     [SerializeField] private float fillMoveAmount = 0.1f;
+
     [Space]
     [Tooltip("Time Before DeActivating everything except the Answer Number Line after moving particles")]
     [SerializeField] private float timeBeforeRemove;
     [Tooltip("Time Before Resetting the Answer Number Line after moving the particles")]
     [SerializeField] private float timeBeforeReset;
+
+    public event IOperationAnimator.OnFinished animatedParticles;
 
     // Start is called before the first frame update
     void Start()
@@ -55,14 +59,12 @@ public class AdditionAnimator : MonoBehaviour, IOperationAnimator
         yield return new WaitForSeconds(timeBeforeReset);
 
         //answerNumberLine.Add(firstNumberLine); <- Doesn't work
-        //answerNumberLine.Add(secondNumberLine); <- Doesn't work
-
-        firstNumberLine.NumberLineFillParent.SetActive(false);
-        secondNumberLine.NumberLineFillParent.SetActive(false);
+        //answerNumberLine.Add(secondNumberLine); <- Doesn't work        
 
         answerNumberLine.DisplayInfo(answer); //remove if can get adding/refresh working
 
         //answerNumberLine.RefreshInfo(); <- Doesn't work
+        animatedParticles?.Invoke();
     }
 
     private void DeActivatePhysics(NumberLine numberLine)
@@ -91,7 +93,7 @@ public class AdditionAnimator : MonoBehaviour, IOperationAnimator
             amountMovedY += fillMoveAmount;
             yield return new WaitForSeconds(.01f);
         }
-        Debug.Log("amountMovedY: " + amountMovedY + ", fillDisplacement.y: " + fillDisplacement.y);
+        //Debug.Log("amountMovedY: " + amountMovedY + ", fillDisplacement.y: " + fillDisplacement.y);
 
         //Move Particles sideways
         float amountMovedX = 0;
@@ -140,14 +142,17 @@ public class AdditionAnimator : MonoBehaviour, IOperationAnimator
         //Run animation
         yield return new WaitForSeconds(timeBeforeRemove);
 
-        DeActivateLine(firstNumberLine);
-        DeActivateLine(secondNumberLine);
+        SetLineActive(firstNumberLine, false);
+        SetLineActive(secondNumberLine, false);
+
+        //additionSign.SetActive(false);
+        //equalSign.SetActive(false);
         
-        additionSign.SetActive(false);
-        equalSign.SetActive(false);
+        firstNumberLine.NumberLineFillParent.SetActive(false);
+        secondNumberLine.NumberLineFillParent.SetActive(false);
     }
 
-    private void DeActivateLine(NumberLine line)
+    private void SetLineActive(NumberLine line, bool active)
     {
         //Set all children of line except NumberLineFillParent to not active
         for (int i = 0; i < line.gameObject.transform.childCount; i++)
@@ -155,8 +160,20 @@ public class AdditionAnimator : MonoBehaviour, IOperationAnimator
             GameObject childObject = line.gameObject.transform.GetChild(i).gameObject;
             if (childObject != line.NumberLineFillParent)
             {
-                childObject.SetActive(false);
+                childObject.SetActive(active);
             }
         }
+    }
+
+    public void ResetAnimationState()
+    {
+        //additionSign.SetActive(false);
+        //equalSign.SetActive(false);
+
+        SetLineActive(firstNumberLine, true);
+        SetLineActive(secondNumberLine, true);
+
+        firstNumberLine.NumberLineFillParent.SetActive(true);
+        secondNumberLine.NumberLineFillParent.SetActive(true);
     }
 }
