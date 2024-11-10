@@ -15,6 +15,8 @@ public class FeedbackText : MonoBehaviour
     [SerializeField] private NumberLine beaker2;
 
     private TMP_Text textbox;
+    private bool beaker1DidOverflow;
+    private bool beaker2DidOverflow;
 
     private void Awake()
     {
@@ -33,8 +35,8 @@ public class FeedbackText : MonoBehaviour
             fraction2.updated += CheckDenominators;
         }
 
-        beaker1.beakerOverflow += BeakerOverflow;
-        beaker2.beakerOverflow += BeakerOverflow;
+        beaker1.beakerOverflow += Beaker1Overflow;
+        beaker2.beakerOverflow += Beaker2Overflow;
     }
 
     private void OnDisable()
@@ -49,8 +51,8 @@ public class FeedbackText : MonoBehaviour
             fraction2.updated -= CheckDenominators;
         }
 
-        beaker1.beakerOverflow -= BeakerOverflow;
-        beaker2.beakerOverflow -= BeakerOverflow;
+        beaker1.beakerOverflow -= Beaker1Overflow;
+        beaker2.beakerOverflow -= Beaker2Overflow;
     }
 
     private void Start()
@@ -69,7 +71,7 @@ public class FeedbackText : MonoBehaviour
     {
         SetText("WRONG!", 24f);
     }
-    
+
     private void ResetState()
     {
         SetText(string.Empty);
@@ -77,6 +79,9 @@ public class FeedbackText : MonoBehaviour
 
     private void CheckDenominators()
     {
+        if (beaker1DidOverflow || beaker2DidOverflow)
+            return;
+
         if ((fraction1.denominator != fraction2.denominator) && fraction1.denominator != 0 && fraction2.denominator != 0)
             SetText("For some puzzles, finding the answer would require one to find a common denominator. This prototype " +
                 "doesn't include such functionality, but we plan to implement it in the next iteration.");
@@ -84,11 +89,21 @@ public class FeedbackText : MonoBehaviour
             SetText(string.Empty);
     }
 
-    private void BeakerOverflow(bool didOverflow)
+    private void Beaker1Overflow(bool didOverflow)
     {
+        beaker1DidOverflow = didOverflow;
         if (didOverflow)
             SetText("That value is too large for a beaker of this size!");
-        else
+        else if (!beaker2DidOverflow)
+            SetText(string.Empty);
+    }
+
+    private void Beaker2Overflow(bool didOverflow)
+    {
+        beaker2DidOverflow = didOverflow;
+        if (didOverflow)
+            SetText("That value is too large for a beaker of this size!");
+        else if (!beaker1DidOverflow)
             SetText(string.Empty);
     }
 
