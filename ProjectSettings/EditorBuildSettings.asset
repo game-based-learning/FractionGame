@@ -5,7 +5,31 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Final Scenes/MainMenu.unity
+    guid: fc618975465970c46bcad4b52d2673ea
+  - enabled: 0
+    path: Assets/Scenes/AnimationTestingScene.unity
+    guid: d9ff4d21150b91b4b8b155506b9539b4
+  - enabled: 0
+    path: Assets/Scenes/NumberLineAdditionTestScene.unity
+    guid: 88e49aa6322b73b49a7a5bc4746e9e54
+  - enabled: 0
+    path: Assets/Scenes/NumberLineDisplayTestScene.unity
+    guid: 91897a52fa489264ba2bd3b2d719ce51
+  - enabled: 1
+    path: Assets/Scenes/Final Scenes/Puzzle1.unity
+    guid: dba1d9f64cc284249867f5a12b5e7e1d
+  - enabled: 1
+    path: Assets/Scenes/Final Scenes/Puzzle2.unity
+    guid: 2da08cada958f394cb3299b1c2763da1
+  - enabled: 1
+    path: Assets/Scenes/Final Scenes/Puzzle3.unity
+    guid: b764b97b89a680549ab7c49d6dc63b9d
+  - enabled: 1
+    path: Assets/Scenes/Final Scenes/Puzzle4.unity
+    guid: da89a2d633e8d2946b28fb1b9cdc2cef
   m_configObjects: {}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,9 @@ public class NumberLine : MonoBehaviour
 
     private List<GameObject> tickMarkObjects = new List<GameObject>();
 
+    public delegate void OnBeakerOverflow(bool didOverflow);
+    public event OnBeakerOverflow beakerOverflow;
+
     void Awake()
     {
         SpriteRenderer numberLineFillUnitSpriteRenderer = this.numberLineFillUnitPrefab.GetComponentInChildren<SpriteRenderer>();
@@ -116,8 +120,10 @@ public class NumberLine : MonoBehaviour
         if (!GeneralUtility.IsInRange(currentValue, this.LineRangeMin, this.LineRangeMax))
         {
             Debug.Log("The current value ( " + currentValue + " ) is not within the Number Line Range from " + this.LineRangeMin + " to " + this.LineRangeMax);
+            beakerOverflow?.Invoke(true);
             return;
         }
+        beakerOverflow?.Invoke(false);
 
         float percentToFill = GeneralUtility.PercentOfRange(currentValue, this.LineRangeMin, this.LineRangeMax);
         float startingYPos;

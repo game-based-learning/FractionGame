@@ -44,18 +44,19 @@ public class Fraction: MonoBehaviour
         updateValue();
     }
     
-    public void setFraction(int Numerator, int Denominator)
+    public void setFraction(int Numerator, int Denominator, bool updateNumberLine = true)
     {
         this.numerator = Numerator;
         this.denominator = Denominator;
-        updateValue();
+        updateValue(updateNumberLine);
     }
 
-    private void updateValue()
+    private void updateValue(bool updateNumberLine = true)
     {
         value = (denominator != 0) ? ((float)numerator / denominator) : null;
         // If value is null, display 0
-        numberLine.DisplayInfo(value ?? 0);
+        if (updateNumberLine)
+            numberLine.DisplayInfo(value ?? 0);
         updated?.Invoke();
     }
 }
